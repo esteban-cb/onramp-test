@@ -17,6 +17,9 @@ cdp_api_key*.json
 # vercel
 .vercel/
 
+# local data store
+.data/
+
 # misc
 .DS_Store
 *.tsbuildinfo
