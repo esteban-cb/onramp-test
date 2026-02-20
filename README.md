@@ -74,12 +74,11 @@ Set environment variables in Vercel:
 - `CDP_API_KEY_ID` — from your CDP API key JSON (`id` field)
 - `CDP_API_KEY_SECRET` — from your CDP API key JSON (`privateKey` field)
 
-For persistent shared results across deploys, add [Upstash Redis](https://vercel.com/marketplace?search=upstash) from the Vercel Marketplace:
+For persistent shared results across deploys, add a Redis store from the Vercel Marketplace:
 
-- `UPSTASH_REDIS_REST_URL`
-- `UPSTASH_REDIS_REST_TOKEN`
+- `REDIS_URL` — Redis connection string (auto-set when you connect a Redis store in Vercel)
 
-Without Upstash Redis, shared results persist locally via a JSON file (works for local dev but not on Vercel serverless). Personal results always persist via localStorage.
+Without Redis, shared results persist locally via a JSON file (works for local dev but not on Vercel serverless). Personal results always persist via localStorage.
 
 ## How it works
 
