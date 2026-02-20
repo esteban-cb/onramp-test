@@ -541,7 +541,7 @@ export default function Home() {
           </tbody>
         </table>
         <div className="mt-3 text-[11px] text-gray-400">
-          <p><sup>1</sup> Apple Pay on desktop Chromium browsers (Chrome, Edge, Arc, Dia, Opera) supported on macOS only.</p>
+          <p><sup>1</sup> Chromium-based browser (Chrome, Edge, Arc, Dia, Opera).</p>
           <p className="mt-1">Test on each browser to fill in the matrix. Shared results are aggregated from all testers. Personal results are saved in localStorage.</p>
         </div>
       </div>
