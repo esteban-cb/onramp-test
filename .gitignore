@@ -1,0 +1,23 @@
+# dependencies
+node_modules/
+
+# next.js
+.next/
+out/
+
+# env files (API keys, secrets)
+.env
+.env.*
+.env.local
+.env*.local
+
+# CDP API keys
+cdp_api_key*.json
+
+# vercel
+.vercel/
+
+# misc
+.DS_Store
+*.tsbuildinfo
+next-env.d.ts

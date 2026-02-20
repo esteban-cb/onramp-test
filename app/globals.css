@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    @apply font-sans bg-gray-50 text-gray-900 leading-relaxed;
+  }
+}
+
+@layer components {
+  .spinner {
+    @apply w-5 h-5 border-2 border-gray-200 border-t-blue-600 rounded-full inline-block mr-2 align-middle;
+    animation: spin 0.6s linear infinite;
+  }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
