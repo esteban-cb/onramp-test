@@ -43,6 +43,17 @@ async function checkBrave() {
   return false;
 }
 
+// Arc hides itself in the UA string, but injects CSS variables for its theming
+function checkArc() {
+  if (typeof document === "undefined") return false;
+  const styles = getComputedStyle(document.documentElement);
+  return !!(
+    styles.getPropertyValue("--arc-palette-title") ||
+    styles.getPropertyValue("--arc-palette-background") ||
+    styles.getPropertyValue("--arc-palette-foreground")
+  );
+}
+
 function getMatrixKey(browser, os) {
   const b = browser.toLowerCase();
   if (b.includes("chrome") && os === "iOS") return "chrome-ios";
@@ -161,6 +172,8 @@ export default function Home() {
     checkBrave().then((isBrave) => {
       if (isBrave) {
         detected.browser = "Brave";
+      } else if (checkArc()) {
+        detected.browser = "Arc";
       }
       setInfo(detected);
       setMatrixKey(getMatrixKey(detected.browser, detected.os));
