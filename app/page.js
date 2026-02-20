@@ -22,6 +22,7 @@ function detectBrowser() {
   else if (/Firefox\//.test(ua)) browser = "Firefox";
   else if (/Edg\//.test(ua)) browser = "Edge";
   else if (/OPR\//.test(ua)) browser = "Opera";
+  else if (/Brave/.test(ua)) browser = "Brave";
   else if (/Arc\//.test(ua)) browser = "Arc";
   else if (/Dia\//.test(ua)) browser = "Dia";
   else if (/Chrome\//.test(ua) && !/Edg\//.test(ua)) browser = "Chrome";
@@ -43,6 +44,7 @@ function getMatrixKey(browser, os) {
   if (b.includes("safari")) return "safari";
   if (b.includes("edge")) return "edge";
   if (b.includes("opera")) return "opera";
+  if (b === "brave") return "brave";
   if (b === "arc") return "arc";
   if (b === "dia") return "dia";
   if (b.includes("chrome")) return "chrome";
@@ -51,6 +53,7 @@ function getMatrixKey(browser, os) {
 
 const MATRIX_ROWS = [
   { key: "chrome", label: "Chrome", note: "1" },
+  { key: "brave", label: "Brave", note: "1" },
   { key: "arc", label: "Arc", note: "1" },
   { key: "dia", label: "Dia", note: "1" },
   { key: "edge", label: "Edge", note: "1" },
@@ -541,7 +544,7 @@ export default function Home() {
           </tbody>
         </table>
         <div className="mt-3 text-[11px] text-gray-400">
-          <p><sup>1</sup> Chromium-based browser (Chrome, Edge, Arc, Dia, Opera).</p>
+          <p><sup>1</sup> Chromium-based browser (Chrome, Brave, Arc, Dia, Edge, Opera).</p>
           <p className="mt-1">Test on each browser to fill in the matrix. Shared results are aggregated from all testers. Personal results are saved in localStorage.</p>
         </div>
       </div>
