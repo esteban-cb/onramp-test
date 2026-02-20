@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 
 function detectBrowser() {
-  if (typeof navigator === "undefined") return { browser: "Unknown", os: "Unknown", device: "Unknown", ua: "" };
+  if (typeof navigator === "undefined") return { browser: "Unknown", os: "Unknown", device: "Unknown", ua: "", isBrave: false };
 
   const ua = navigator.userAgent;
   let browser = "Unknown";
@@ -19,10 +19,10 @@ function detectBrowser() {
   if (/CriOS/.test(ua)) browser = "Chrome (iOS)";
   else if (/FxiOS/.test(ua)) browser = "Firefox (iOS)";
   else if (/EdgiOS/.test(ua)) browser = "Edge (iOS)";
+  else if (/SamsungBrowser/.test(ua)) browser = "Samsung Internet";
   else if (/Firefox\//.test(ua)) browser = "Firefox";
   else if (/Edg\//.test(ua)) browser = "Edge";
   else if (/OPR\//.test(ua)) browser = "Opera";
-  else if (/Brave/.test(ua)) browser = "Brave";
   else if (/Arc\//.test(ua)) browser = "Arc";
   else if (/Dia\//.test(ua)) browser = "Dia";
   else if (/Chrome\//.test(ua) && !/Edg\//.test(ua)) browser = "Chrome";
@@ -33,12 +33,26 @@ function detectBrowser() {
   return { browser, os, device, ua };
 }
 
+// Brave hides itself in the UA string, so we need to check navigator.brave
+async function checkBrave() {
+  if (typeof navigator !== "undefined" && navigator.brave) {
+    try {
+      return await navigator.brave.isBrave();
+    } catch { return false; }
+  }
+  return false;
+}
+
 function getMatrixKey(browser, os) {
   const b = browser.toLowerCase();
   if (b.includes("chrome") && os === "iOS") return "chrome-ios";
   if (b.includes("firefox") && os === "iOS") return "firefox-ios";
   if (b.includes("edge") && os === "iOS") return "edge-ios";
   if (b.includes("safari") && os === "iOS") return "safari-ios";
+  if (os === "Android" && b.includes("samsung")) return "android-samsung";
+  if (os === "Android" && b.includes("firefox")) return "android-firefox";
+  if (os === "Android" && b === "brave") return "android-brave";
+  if (os === "Android" && b.includes("edge")) return "android-edge";
   if (os === "Android") return "android-chrome";
   if (b.includes("firefox")) return "firefox";
   if (b.includes("safari")) return "safari";
@@ -65,6 +79,10 @@ const MATRIX_ROWS = [
   { key: "firefox-ios", label: "Firefox on iOS 16+" },
   { key: "edge-ios", label: "Edge on iOS 16+" },
   { key: "android-chrome", label: "Chrome on Android" },
+  { key: "android-samsung", label: "Samsung Internet on Android" },
+  { key: "android-firefox", label: "Firefox on Android" },
+  { key: "android-brave", label: "Brave on Android" },
+  { key: "android-edge", label: "Edge on Android" },
 ];
 
 function StatusCell({ status, note, testers, showCount }) {
@@ -139,8 +157,14 @@ export default function Home() {
 
   useEffect(() => {
     const detected = detectBrowser();
-    setInfo(detected);
-    setMatrixKey(getMatrixKey(detected.browser, detected.os));
+
+    checkBrave().then((isBrave) => {
+      if (isBrave) {
+        detected.browser = "Brave";
+      }
+      setInfo(detected);
+      setMatrixKey(getMatrixKey(detected.browser, detected.os));
+    });
 
     if (typeof window !== "undefined" && window.ApplePaySession) {
       setApplePayAvailable(window.ApplePaySession.canMakePayments());
